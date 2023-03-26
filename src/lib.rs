@@ -1,3 +1,3 @@
 mod data;
-mod domain;
-mod models;
+pub mod domain;
+pub mod models;
