@@ -6,6 +6,7 @@ use uuid::Uuid;
 use async_trait::async_trait;
 use speech_backend_common::{result::ApiResult, data::DataHolder};
 use crate::models::{Device, Session};
+use crate::models::results::{Device, Session};
 
 #[async_trait]
 pub(crate) trait SessionRepository {
@@ -59,7 +60,7 @@ impl SessionRepository for DataHolder {
         todo!()
     }
 
-    fn clear_session(&self, session_id: Uuid, latest_ip_address: IpAddr, session_key: Vec<u8>) {
+    fn clear_session(&mut self, session_id: Uuid, session_key: Vec<u8>) {
         todo!()
     }
 }

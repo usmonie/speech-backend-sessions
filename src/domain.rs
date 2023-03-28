@@ -7,22 +7,11 @@ use tokio::sync::Mutex;
 use uuid::Uuid;
 
 use crate::{data::SessionRepository, models::{Session, Device}};
+use crate::models::request::{AddUserToSessionRequest, ClearSessionRequest, CreateSessionRequest, GetSessionRequest, UpdateSessionIpRequest};
+use crate::models::results::Session;
 
 pub struct GetSessionUseCase {
     sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>,
-}
-
-/// Get session request from repository by session id
-/// * `id` — session id
-/// returns `Session`
-pub struct GetSessionRequest {
-    id: String,
-}
-
-pub struct CreateSessionRequest {
-    device: Device,
-    ip_addr: IpAddr,
-    session_key: Vec<u8>,
 }
 
 #[async_trait]
@@ -65,14 +54,6 @@ pub struct AddUserToSessionUseCase {
     sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>,
 }
 
-pub struct AddUserToSessionRequest {
-    session_id: Uuid,
-    latest_ip_address: IpAddr,
-    user_id: Uuid,
-    session_key: Vec<u8>,
-    user_password_hash: Vec<u8>,
-}
-
 #[async_trait]
 impl UseCase<AddUserToSessionRequest, Session> for AddUserToSessionUseCase {
     async fn execute(&self, request: AddUserToSessionRequest) -> ApiResult<Session> {
@@ -96,12 +77,6 @@ pub struct UpdateSessionIpUseCase {
     sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>,
 }
 
-pub struct UpdateSessionIpRequest {
-    session_id: Uuid,
-    latest_ip_address: IpAddr,
-    session_key: Vec<u8>,
-}
-
 #[async_trait]
 impl UseCase<UpdateSessionIpRequest, Session> for UpdateSessionIpUseCase {
     async fn execute(&self, request: UpdateSessionIpRequest) -> ApiResult<Session> {
@@ -123,11 +98,6 @@ impl UpdateSessionIpUseCase {
 
 pub struct ClearSessionUseCase {
     sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>,
-}
-
-pub struct ClearSessionRequest {
-    session_id: Uuid,
-    session_key: Vec<u8>,
 }
 
 impl UseCase<ClearSessionRequest, ()> for ClearSessionUseCase {
