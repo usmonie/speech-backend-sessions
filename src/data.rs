@@ -1,11 +1,8 @@
-use std::{net::IpAddr, sync::Arc};
-use rsmgclient::Connection;
-use sled::Db;
-use tokio::sync::Mutex;
+use std::net::IpAddr;
 use uuid::Uuid;
 use async_trait::async_trait;
-use speech_backend_common::{result::ApiResult, data::DataHolder};
-use crate::models::{Device, Session};
+use speech_backend_common::ApiResult;
+use speech_backend_common::data::DataHolder;
 use crate::models::results::{Device, Session};
 
 #[async_trait]
@@ -56,7 +53,7 @@ impl SessionRepository for DataHolder {
         todo!()
     }
 
-    async fn get_session(&mut self, id: &str) -> ApiResult<Session> {
+    async fn get_session(&self, id: &str) -> ApiResult<Session> {
         todo!()
     }
 

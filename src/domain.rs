@@ -1,12 +1,11 @@
-use std::{sync::Arc, net::IpAddr};
+use std::sync::Arc;
 
 use async_trait::async_trait;
+use speech_backend_common::ApiResult;
 use speech_backend_common::domain::UseCase;
-use speech_backend_common::result::ApiResult;
 use tokio::sync::Mutex;
-use uuid::Uuid;
 
-use crate::{data::SessionRepository, models::{Session, Device}};
+use crate::{data::SessionRepository};
 use crate::models::request::{AddUserToSessionRequest, ClearSessionRequest, CreateSessionRequest, GetSessionRequest, UpdateSessionIpRequest};
 use crate::models::results::Session;
 
@@ -100,6 +99,7 @@ pub struct ClearSessionUseCase {
     sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>,
 }
 
+#[async_trait]
 impl UseCase<ClearSessionRequest, ()> for ClearSessionUseCase {
     async fn execute(&self, request: ClearSessionRequest) -> ApiResult<()> {
         self.sessions_repository
