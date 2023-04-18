@@ -1,9 +1,10 @@
 pub mod results {
     use std::net::IpAddr;
+    use uuid::Uuid;
 
     #[derive(PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Debug)]
     pub struct Session {
-        pub id: String,
+        pub id: Uuid,
         pub device: Device,
         pub ip_address: IpAddr,
         pub session_key: Vec<u8>,
@@ -33,7 +34,7 @@ pub mod request {
     use crate::models::results::Device;
 
     pub struct GetSessionRequest {
-        pub id: String,
+        pub id: Uuid,
     }
 
     pub struct CreateSessionRequest {
@@ -41,7 +42,6 @@ pub mod request {
         pub ip_addr: IpAddr,
         pub session_key: Vec<u8>,
     }
-
 
     pub struct UpdateSessionIpRequest {
         pub session_id: Uuid,
