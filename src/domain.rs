@@ -19,7 +19,7 @@ impl UseCase<GetSessionRequest, Session> for GetSessionUseCase {
         let session = self.sessions_repository
             .lock()
             .await
-            .get_session(request.id.as_str())
+            .get_session(request.id.to_string().as_str())
             .await;
 
         return session;
