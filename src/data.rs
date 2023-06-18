@@ -6,7 +6,7 @@ use speech_backend_common::data::DataHolder;
 use crate::models::results::{Device, Session};
 
 #[async_trait]
-pub(crate) trait SessionRepository {
+pub trait SessionRepository {
     async fn  create_session(
         &mut self,
         device: Device,

@@ -9,23 +9,6 @@ use crate::{data::SessionRepository};
 use crate::models::request::{AddUserToSessionRequest, ClearSessionRequest, CreateSessionRequest, GetSessionRequest, UpdateSessionIpRequest};
 use crate::models::results::Session;
 
-pub struct GetSessionUseCase {
-    sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>,
-}
-
-#[async_trait]
-impl UseCase<GetSessionRequest, Session> for GetSessionUseCase {
-    async fn execute(&self, request: GetSessionRequest) -> ApiResult<Session> {
-        let session = self.sessions_repository
-            .lock()
-            .await
-            .get_session(request.id.to_string().as_str())
-            .await;
-
-        return session;
-    }
-}
-
 pub struct CreateSessionUseCase {
     sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>,
 }
@@ -44,8 +27,25 @@ impl UseCase<CreateSessionRequest, Session> for CreateSessionUseCase {
 }
 
 impl CreateSessionUseCase {
-    fn new(sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>) -> Self {
+    pub fn new(sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>) -> Self {
         Self { sessions_repository }
+    }
+}
+
+pub struct GetSessionUseCase {
+    sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>,
+}
+
+#[async_trait]
+impl UseCase<GetSessionRequest, Session> for GetSessionUseCase {
+    async fn execute(&self, request: GetSessionRequest) -> ApiResult<Session> {
+        let session = self.sessions_repository
+            .lock()
+            .await
+            .get_session(request.id.to_string().as_str())
+            .await;
+
+        return session;
     }
 }
 
@@ -67,7 +67,7 @@ impl UseCase<AddUserToSessionRequest, Session> for AddUserToSessionUseCase {
 }
 
 impl AddUserToSessionUseCase {
-    fn new(sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>) -> Self {
+    pub fn new(sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>) -> Self {
         Self { sessions_repository }
     }
 }
@@ -90,7 +90,7 @@ impl UseCase<UpdateSessionIpRequest, Session> for UpdateSessionIpUseCase {
 }
 
 impl UpdateSessionIpUseCase {
-    fn new(sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>) -> Self {
+    pub fn new(sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>) -> Self {
         Self { sessions_repository }
     }
 }
@@ -112,7 +112,7 @@ impl UseCase<ClearSessionRequest, ()> for ClearSessionUseCase {
 }
 
 impl ClearSessionUseCase {
-    fn new(sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>) -> Self {
+    pub fn new(sessions_repository: Arc<Mutex<dyn SessionRepository + Send + Sync>>) -> Self {
         Self { sessions_repository }
     }
 }
